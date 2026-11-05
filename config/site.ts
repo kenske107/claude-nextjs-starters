@@ -23,6 +23,13 @@ export const siteConfig = {
   dashboardNav: [
     { title: "개요", href: "/dashboard", icon: LayoutDashboard },
     { title: "문서", href: "/about", icon: FileText },
-    { title: "설정", href: "/dashboard#settings", icon: Settings },
+    { title: "설정", href: "/dashboard/settings", icon: Settings },
   ] satisfies NavItem[],
+  // 브레드크럼 라벨 (URL 세그먼트 → 표시 이름, 없으면 세그먼트 그대로 표시)
+  breadcrumbLabels: {
+    dashboard: "대시보드",
+    settings: "설정",
+    about: "소개",
+    contact: "문의",
+  } as Record<string, string>,
 };

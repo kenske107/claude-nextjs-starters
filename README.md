@@ -21,7 +21,7 @@ npm run dev   # http://localhost:3000
 | --- | --- | --- |
 | `app/(marketing)` | 헤더 + 푸터 | `/`, `/about`, `/contact` |
 | `app/(auth)` | 중앙 카드 | `/login`, `/signup` |
-| `app/(dashboard)` | 사이드바 + 상단바 + 브레드크럼 | `/dashboard` |
+| `app/(dashboard)` | 사이드바 + 상단바 + 브레드크럼 | `/dashboard`, `/dashboard/settings` |
 
 루트 `app/layout.tsx`는 html/body, 테마, 토스트 Provider만 담당합니다.
 
@@ -34,7 +34,7 @@ components/
   forms/      폼 (Molecules): form-field(react-hook-form + zod 래퍼), contact-form, auth-form
   layout/     큰 구조 (Organisms): site-header, site-footer, app-sidebar, breadcrumbs
   providers/  전역 Provider: theme-provider, toaster
-config/site.ts  사이트 이름/설명/내비게이션
+config/site.ts  사이트 이름/설명/내비게이션/브레드크럼 라벨
 hooks/          공용 훅 (use-mobile)
 lib/utils.ts    cn() 유틸
 ```

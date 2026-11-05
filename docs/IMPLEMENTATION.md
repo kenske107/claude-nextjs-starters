@@ -56,6 +56,7 @@ app/
   (dashboard)/          사이드바 + 상단바 + 브레드크럼
     layout.tsx
     dashboard/page.tsx  /dashboard 통계 카드, 탭(사용자 테이블/FAQ 아코디언)
+    dashboard/settings/page.tsx  /dashboard/settings 설정 예제(Switch)
 ```
 
 ### 3.1 루트 레이아웃
@@ -94,7 +95,7 @@ components/
 | --- | --- |
 | `site-header.tsx`, `site-footer.tsx` | 마케팅 영역 헤더와 푸터 |
 | `app-sidebar.tsx` | `siteConfig.dashboardNav` 기반 사이드바. `usePathname`으로 활성 상태를 표시하고, 모바일에서는 Sheet로 전환됩니다. |
-| `breadcrumbs.tsx` | 현재 경로를 분할해 자동으로 브레드크럼을 생성합니다. |
+| `breadcrumbs.tsx` | 현재 경로를 분할해 브레드크럼을 생성하고, `siteConfig.breadcrumbLabels`로 한글 라벨을 매핑합니다. |
 
 ### 4.4 `providers/`
 - `theme-provider.tsx`: next-themes 래퍼
@@ -108,7 +109,7 @@ components/
 
 ## 5. 설정과 유틸
 
-- `config/site.ts`: 사이트 이름, 설명, 마케팅 메뉴(`nav`), 대시보드 메뉴(`dashboardNav`, 아이콘 포함). 브랜딩과 메뉴는 이 파일에서 바꿉니다.
+- `config/site.ts`: 사이트 이름, 설명, 마케팅 메뉴(`nav`), 대시보드 메뉴(`dashboardNav`, 아이콘 포함), 브레드크럼 라벨(`breadcrumbLabels`). 브랜딩과 메뉴는 이 파일에서 바꿉니다.
 - `hooks/use-mobile.ts`: 모바일 뷰포트 판별 훅 (사이드바에서 사용)
 - `lib/utils.ts`: `cn()` (clsx + tailwind-merge)
 
@@ -121,14 +122,13 @@ components/
 
 ## 7. 미구현 및 개선 후보
 
-현재 코드에서 확인된 한계입니다.
-
 1. **인증 없음**: 로그인과 회원가입은 UI와 검증만 있고, 실제 인증과 세션은 없습니다. 대시보드도 보호되지 않습니다.
 2. **문의 전송 없음**: `ContactForm`은 `console.log` 후 토스트만 표시합니다. Server Action이나 API로 교체해야 합니다.
-3. **데이터 계층 없음**: 대시보드 데이터는 모두 하드코딩입니다. `@tanstack/react-table`은 설치만 되어 있고 사용하지 않습니다.
-4. **사이드바 활성 표시**: `설정` 메뉴(`/dashboard#settings`)는 `pathname`과 비교하므로 활성 상태가 되지 않습니다. 같은 `/dashboard`에 `개요`가 있어 의미도 겹칩니다.
-5. **브레드크럼 라벨**: URL 세그먼트를 그대로(`capitalize`) 표시하므로 한글 라벨 매핑이 없습니다.
-6. **불필요한 의존성**: `package.json`에 `cn` 패키지가 있습니다. 코드는 `@/lib/utils`를 쓰므로 제거 후보입니다.
-7. **`error.tsx`**: `retry` prop을 사용합니다. Next.js 16.4 문서에서 시그니처가 맞는지 확인이 필요합니다.
-8. **테스트 없음**: 테스트 설정이 없습니다.
-9. **git 상태**: 위 변경 사항은 모두 미커밋 상태입니다. (`app/page.tsx`는 `(marketing)/page.tsx`로 이동되어 삭제됨)
+3. **데이터 계층 없음**: 대시보드 데이터는 모두 하드코딩입니다. `@tanstack/react-table`은 설치만 되어 있고 사용하지 않습니다(필요 시 사용).
+4. **설정 페이지 저장 없음**: `/dashboard/settings`의 Switch는 상태를 저장하지 않는 예제입니다.
+5. **SEO 메타**: title과 description만 있습니다. `metadataBase`, OpenGraph, `robots.ts`, `sitemap.ts`는 없습니다.
+6. **테스트 없음**: 테스트 설정이 없습니다.
+
+## 8. 변경 이력
+
+- 2026-11-05: 사이드바 "설정" 메뉴를 `/dashboard/settings` 페이지로 연결, 브레드크럼 한글 라벨 매핑 추가, 미사용 `cn` 패키지 제거. `tsc`, `lint`, `build` 통과 확인.

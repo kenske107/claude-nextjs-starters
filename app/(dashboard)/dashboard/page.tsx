@@ -58,9 +58,7 @@ export default function DashboardPage() {
       <Tabs defaultValue="users">
         <TabsList>
           <TabsTrigger value="users">사용자</TabsTrigger>
-          <TabsTrigger value="faq" id="settings">
-            FAQ
-          </TabsTrigger>
+          <TabsTrigger value="faq">FAQ</TabsTrigger>
         </TabsList>
         <TabsContent value="users">
           <Table>

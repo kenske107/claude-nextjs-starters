@@ -3,35 +3,40 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { FormField } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-// 문의 폼 검증 스키마
-const schema = z.object({
-  name: z.string().min(2, "이름은 2자 이상 입력해주세요."),
-  email: z.string().email("올바른 이메일을 입력해주세요."),
-  message: z.string().min(10, "내용은 10자 이상 입력해주세요."),
-});
-
-type ContactValues = z.infer<typeof schema>;
+import { submitContact } from "@/lib/actions/contact";
+import { contactSchema, type ContactValues } from "@/lib/validations/contact";
 
 export function ContactForm() {
   const form = useForm<ContactValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(contactSchema),
     defaultValues: { name: "", email: "", message: "" },
   });
 
-  // 실제 전송 로직(Server Action/API)으로 교체하세요
+  // Server Action으로 전송 (서버에서도 동일 스키마로 재검증)
   async function onSubmit(values: ContactValues) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log(values);
-    toast.success("문의가 접수되었습니다.");
-    form.reset();
+    try {
+      const result = await submitContact(values);
+      if (result.ok) {
+        toast.success("문의가 접수되었습니다.");
+        form.reset();
+        return;
+      }
+      // 서버 검증 오류를 각 필드에 표시
+      for (const [name, messages] of Object.entries(result.fieldErrors ?? {})) {
+        if (messages?.[0]) {
+          form.setError(name as keyof ContactValues, { message: messages[0] });
+        }
+      }
+      toast.error(result.message);
+    } catch {
+      toast.error("전송 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
   }
 
   return (

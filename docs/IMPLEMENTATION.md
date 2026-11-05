@@ -87,7 +87,7 @@ components/
 | 파일 | 역할 |
 | --- | --- |
 | `form-field.tsx` | react-hook-form `Controller`와 shadcn `Field`를 연결하는 래퍼. `render` prop으로 입력 컴포넌트를 받고, 라벨/설명/에러 표시와 `data-invalid`를 처리합니다. |
-| `contact-form.tsx` | 이름(2자 이상), 이메일, 내용(10자 이상) 검증. 전송은 0.5초 지연 후 성공 토스트를 띄우는 **모의 동작**입니다. |
+| `contact-form.tsx` | 이름(2자 이상), 이메일, 내용(10자 이상)을 클라이언트에서 검증한 뒤 Server Action(`submitContact`)으로 전송합니다. 서버 검증 오류는 각 필드에 표시합니다. |
 | `auth-form.tsx` | 이메일, 비밀번호(8자 이상) 검증. 제출 시 안내 토스트만 표시하는 **모의 동작**(백엔드 없음)입니다. |
 
 ### 4.3 `layout/`
@@ -112,6 +112,8 @@ components/
 - `config/site.ts`: 사이트 이름, 설명, 마케팅 메뉴(`nav`), 대시보드 메뉴(`dashboardNav`, 아이콘 포함), 브레드크럼 라벨(`breadcrumbLabels`). 브랜딩과 메뉴는 이 파일에서 바꿉니다.
 - `hooks/use-mobile.ts`: 모바일 뷰포트 판별 훅 (사이드바에서 사용)
 - `lib/utils.ts`: `cn()` (clsx + tailwind-merge)
+- `lib/validations/contact.ts`: 문의 폼 zod 스키마 (클라이언트와 서버 공유)
+- `lib/actions/contact.ts`: `submitContact` Server Action. 서버에서 스키마로 재검증하고 `{ ok, message, fieldErrors }`를 반환합니다. 실제 전달(이메일/DB)은 TODO입니다.
 
 ## 6. 개발 시 주의사항
 
@@ -123,7 +125,7 @@ components/
 ## 7. 미구현 및 개선 후보
 
 1. **인증 없음**: 로그인과 회원가입은 UI와 검증만 있고, 실제 인증과 세션은 없습니다. 대시보드도 보호되지 않습니다.
-2. **문의 전송 없음**: `ContactForm`은 `console.log` 후 토스트만 표시합니다. Server Action이나 API로 교체해야 합니다.
+2. **문의 전달 수단 없음**: `submitContact`는 서버 콘솔에 로그만 남깁니다. 이메일 발송이나 DB 저장을 연결해야 합니다. 스팸 방지(rate limit, honeypot, CAPTCHA)도 없습니다.
 3. **데이터 계층 없음**: 대시보드 데이터는 모두 하드코딩입니다. `@tanstack/react-table`은 설치만 되어 있고 사용하지 않습니다(필요 시 사용).
 4. **설정 페이지 저장 없음**: `/dashboard/settings`의 Switch는 상태를 저장하지 않는 예제입니다.
 5. **SEO 메타**: title과 description만 있습니다. `metadataBase`, OpenGraph, `robots.ts`, `sitemap.ts`는 없습니다.
@@ -133,3 +135,4 @@ components/
 
 - 2026-11-05: 사이드바 "설정" 메뉴를 `/dashboard/settings` 페이지로 연결, 브레드크럼 한글 라벨 매핑 추가, 미사용 `cn` 패키지 제거. `tsc`, `lint`, `build` 통과 확인.
 - 2026-11-05: 링크 버튼을 `buttonVariants` 방식으로 교체(접근성), 폼에 `noValidate`와 `autoComplete` 적용. Playwright로 `/contact`, `/login`, `/dashboard`, 404, 모바일 사이드바 동작 확인.
+- 2026-11-05: 문의 폼 전송을 Server Action으로 구현(`lib/actions/contact.ts`, `lib/validations/contact.ts`). 대시보드 상단바 구분선 정렬 수정.

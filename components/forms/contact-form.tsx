@@ -35,7 +35,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <FormField
           form={form}
@@ -50,7 +50,13 @@ export function ContactForm() {
           name="email"
           label="이메일"
           render={(field, invalid) => (
-            <Input id="email" type="email" aria-invalid={invalid} {...field} />
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              aria-invalid={invalid}
+              {...field}
+            />
           )}
         />
         <FormField

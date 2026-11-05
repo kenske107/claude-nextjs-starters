@@ -46,7 +46,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           {isLogin ? "계정 정보를 입력하세요." : "새 계정을 만드세요."}
         </CardDescription>
       </CardHeader>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent>
           <FieldGroup>
             <FormField
@@ -54,7 +54,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
               name="email"
               label="이메일"
               render={(field, invalid) => (
-                <Input id="email" type="email" aria-invalid={invalid} {...field} />
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  aria-invalid={invalid}
+                  {...field}
+                />
               )}
             />
             <FormField
@@ -62,7 +68,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
               name="password"
               label="비밀번호"
               render={(field, invalid) => (
-                <Input id="password" type="password" aria-invalid={invalid} {...field} />
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete={isLogin ? "current-password" : "new-password"}
+                  aria-invalid={invalid}
+                  {...field}
+                />
               )}
             />
           </FieldGroup>

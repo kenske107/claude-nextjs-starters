@@ -61,8 +61,9 @@ lib/utils.ts    cn() 유틸
 
 ## 주의사항
 
-- shadcn 스타일은 `base-nova`(Base UI 기반)입니다. 링크 버튼은 `asChild` 대신
-  `<Button nativeButton={false} render={<Link href="/" />} />`를 사용합니다.
+- shadcn 스타일은 `base-nova`(Base UI 기반)입니다. 링크 버튼은 접근성을 위해
+  `<Link href="/" className={buttonVariants()}>`처럼 `buttonVariants`를 `Link`에 직접 적용합니다.
+  (`<Button render={<Link />} />`는 role="button"으로 읽혀 링크가 아닌 버튼으로 인식됩니다.)
 - shadcn CLI가 `import { cn } from "cn"`으로 생성하면 `@/lib/utils`로 고쳐주세요.
 - Cache Components가 켜져 있어 렌더 중 `new Date()` 같은 불안정한 값은 사용할 수 없습니다.
 - 이 프로젝트의 Next.js 문서는 `node_modules/next/dist/docs/`를 참고하세요.

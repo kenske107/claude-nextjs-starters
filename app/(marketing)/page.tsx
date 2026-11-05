@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -39,20 +39,18 @@ export default function Home() {
           {siteConfig.description}
         </p>
         <div className="flex gap-3">
-          <Button size="lg" nativeButton={false} render={<Link href="/about" />}>
+          <Link href="/about" className={buttonVariants({ size: "lg" })}>
             시작하기
             <ArrowRight data-icon="inline-end" />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            nativeButton={false}
-            render={
-              <a href="https://ui.shadcn.com" target="_blank" rel="noreferrer" />
-            }
+          </Link>
+          <a
+            href="https://ui.shadcn.com"
+            target="_blank"
+            rel="noreferrer"
+            className={buttonVariants({ size: "lg", variant: "outline" })}
           >
             shadcn/ui 문서
-          </Button>
+          </a>
         </div>
       </section>
 

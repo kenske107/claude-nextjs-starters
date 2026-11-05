@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Menu, Rocket } from "lucide-react";
 
 import { ThemeToggle } from "@/components/common/theme-toggle";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -24,14 +24,13 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-1 md:flex">
           {siteConfig.nav.map((item) => (
-            <Button
+            <Link
               key={item.href}
-              variant="ghost"
-              nativeButton={false}
-              render={<Link href={item.href} />}
+              href={item.href}
+              className={buttonVariants({ variant: "ghost" })}
             >
               {item.title}
-            </Button>
+            </Link>
           ))}
           <ThemeToggle />
         </nav>

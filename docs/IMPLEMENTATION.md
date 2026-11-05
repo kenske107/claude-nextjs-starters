@@ -115,7 +115,7 @@ components/
 
 ## 6. 개발 시 주의사항
 
-- 링크 버튼은 `asChild`가 아니라 `<Button nativeButton={false} render={<Link href="/" />} />` 형태를 씁니다 (Base UI 방식).
+- 링크 버튼은 `<Button render={<Link />} />`가 아니라 `<Link className={buttonVariants()}>` 형태를 씁니다. 전자는 접근성 트리에서 `button`으로 읽힙니다.
 - shadcn CLI가 `import { cn } from "cn"`으로 생성하면 `@/lib/utils`로 고쳐야 합니다.
 - Next.js 16에는 기존과 다른 변경점이 있으므로 `node_modules/next/dist/docs/`를 참고합니다.
 - 명령어: `npm run dev`, `npm run build`, `npm run lint`
@@ -132,3 +132,4 @@ components/
 ## 8. 변경 이력
 
 - 2026-11-05: 사이드바 "설정" 메뉴를 `/dashboard/settings` 페이지로 연결, 브레드크럼 한글 라벨 매핑 추가, 미사용 `cn` 패키지 제거. `tsc`, `lint`, `build` 통과 확인.
+- 2026-11-05: 링크 버튼을 `buttonVariants` 방식으로 교체(접근성), 폼에 `noValidate`와 `autoComplete` 적용. Playwright로 `/contact`, `/login`, `/dashboard`, 404, 모바일 사이드바 동작 확인.
